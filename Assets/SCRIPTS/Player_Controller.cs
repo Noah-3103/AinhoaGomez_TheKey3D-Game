@@ -4,6 +4,8 @@ public class Player_Controller : MonoBehaviour
 {
 
     public float moveSpeed = 5f;
+    public float gravity = -9.81f;
+    public float verticalSpeed;
     float horizontalMove;
     float verticalMove;
     private CharacterController charController;
@@ -18,7 +20,19 @@ public class Player_Controller : MonoBehaviour
     {
         horizontalMove = Input.GetAxis("Horizontal");
         verticalMove = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontalMove, 0, verticalMove);
+
+        if (charController.isGrounded == true)
+        {
+            verticalSpeed = 0;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                verticalSpeed = 3f;
+            }
+        }
+
+        verticalSpeed += gravity * Time.deltaTime;
+
+        Vector3 direction = new Vector3(horizontalMove, verticalSpeed, verticalMove);
         charController.Move(direction * moveSpeed * Time.deltaTime);
     }
 }
