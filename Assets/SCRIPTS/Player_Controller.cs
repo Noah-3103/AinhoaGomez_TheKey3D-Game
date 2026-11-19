@@ -9,6 +9,8 @@ public class Player_Controller : MonoBehaviour
     float horizontalMove;
     float verticalMove;
     private CharacterController charController;
+
+    public Collectable_Controller collectableController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,5 +36,16 @@ public class Player_Controller : MonoBehaviour
 
         Vector3 direction = new Vector3(horizontalMove, verticalSpeed, verticalMove);
         charController.Move(direction * moveSpeed * Time.deltaTime);
+    }
+
+    public void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        Debug.Log("Collided with: " + hit.gameObject.name);
+
+        if (hit.gameObject.CompareTag("Coin"))
+        {
+            collectableController.AddCoin();
+            Destroy(hit.gameObject);
+        }
     }
 }
